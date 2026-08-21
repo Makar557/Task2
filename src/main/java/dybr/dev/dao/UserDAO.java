@@ -99,6 +99,10 @@ public class UserDAO {
 
         try {
 
+            if (user.getId() == null) {
+                throw new IllegalArgumentException();
+            }
+
             newUser = session.find(UserEntity.class, user.getId());
 
             if (newUser == null) {
@@ -115,7 +119,12 @@ public class UserDAO {
             transaction.rollback();
             logger.warn("Несуществующий пользователь с id={}", user.getId());
             throw e;
-        } catch (RuntimeException e) {
+        } catch (IllegalArgumentException e) {
+            transaction.rollback();
+            logger.warn("Некорректный пользователь с id={}", user.getId());
+            throw e;
+        }
+        catch (RuntimeException e) {
             transaction.rollback();
             logger.error("Произошла ошибка при попытке сохранить пользователя с id={}", user.getId(), e);
             throw e;

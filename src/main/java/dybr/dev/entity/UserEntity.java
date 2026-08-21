@@ -8,6 +8,7 @@ import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
 import java.time.LocalDate;
+import java.util.Objects;
 
 @Entity
 @Table(name = "users")
@@ -85,5 +86,17 @@ public class UserEntity {
         return  "name='" + name + '\'' +
                 ", email='" + email + '\'' +
                 ", age=" + age;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (o == null || getClass() != o.getClass()) return false;
+        UserEntity that = (UserEntity) o;
+        return age == that.age && Objects.equals(id, that.id) && Objects.equals(name, that.name) && Objects.equals(email, that.email) && Objects.equals(created_at, that.created_at);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(id, name, email, age, created_at);
     }
 }
