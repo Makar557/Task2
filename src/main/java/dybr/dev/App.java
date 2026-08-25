@@ -21,5 +21,7 @@ public class App {
         UserConsole console = new UserConsole(userService);
 
         console.run();
+
+        //dev
     }
 }
